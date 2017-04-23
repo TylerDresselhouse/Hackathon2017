@@ -60,7 +60,7 @@ public class Panel extends JPanel {
 	
 	//boolean moving = false;
 	
-	javax.swing.Timer spawnTimer = new javax.swing.Timer(1000, new ActionListener() {
+	javax.swing.Timer spawnTimer = new javax.swing.Timer(5000, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			//spawn an enemy from one of the 8 random locations
 			int randomInt = (int) (Math.random() * 5);
@@ -156,6 +156,34 @@ public class Panel extends JPanel {
 			}
 		});
 		
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int mousex = e.getX();
+				int mousey = e.getY();
+				Iterator<Trash> it = trashArr.iterator();
+				Iterator<Recyclable> re = recArr.iterator();
+		        while (it.hasNext()) {
+		            Trash t = it.next();
+		            if (mousex > t.x && mousex < t.x+50 && mousey > t.y && mousey < t.y+50) {
+		            	//you clicked on this object (inside the boundaries)
+		            	System.out.println("Trash hit!");
+		            	score++;
+		            	updateScore();
+		            	it.remove();
+		            }
+		        }
+		        while (re.hasNext()) {
+		        	Recyclable r = re.next();
+		        	if (mousex > r.x && mousex < r.x+50 && mousey > r.y && mousey < r.y+50) {
+		        		//you clicked on this object (inside the boundaries)
+		        		System.out.println("Bottle hit!");
+		        		takeDamage();
+		        		re.remove();
+		        	}
+		        }
+			}
+		});
 		menuPanel.setLayout(new GridLayout(1, 3));
 		
 		menuPanel.add(lifeLabel);
